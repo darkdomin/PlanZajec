@@ -7,414 +7,634 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
+using LiteDB;
+
 
 namespace PlanZajec
 {
     public partial class Form1 : Form
     {
-        string konfiguracja = "datasource=localhost;CharSet=Utf8;port=3306;username=root;password=Darek80;database=przepis";
-        string wyszukaniePrzedmiot = "SELECT * FROM planzajec.plan order by przedmiot ;";
-        string wyszukanieCzas = "SELECT * FROM planzajec.czas order by czas;";
-        int id;
+
+        int idSubject, idTime, sekundy = 0, minuty = 0, godziny = 0, pomiarCzasu, dodajCzas = 0;
+
         public Form1()
         {
             InitializeComponent();
-           
+
+            //dgGridPrzedmiot.Columns.Add("id", "Id");
+            //dgGridPrzedmiot.Columns.Add("imie", "Przedmiot");
+            //dgGridPrzedmiot.Columns.Add("stat", "Statystyka w min");
+            //dgGridCzas.Columns.Add("pochodzenie", "Id");
+            //dgGridCzas.Columns.Add("telefon", "Czas");
+
+            //dgGridPrzedmiot.Columns[0].Visible = false;
+            //dgGridCzas.Columns[0].Visible = false;
+
+            //filldgSubject(dgGridPrzedmiot);
+            //filldgTime(dgGridCzas);
         }
+
+        public static void filldgSubject(DataGridView dg)
+        { // Przy próbie uruchomienia bez Administratora wystepuje bład w tej funkcji - spowodowany dostępem
+            dg.Rows.Clear();
+            foreach (var r in FunctionClassSubject.getAll())
+            {
+                dg.Rows.Add(r.Id, r.SubjectDescription, r.Statystyka);
+            }
+        }
+
+        public static void filldgTime(DataGridView dg)
+        {
+            dg.Rows.Clear();
+            foreach (var r in FunctionClassTime.getAll())
+            {
+                dg.Rows.Add(r.Id, r.TimeDuration.ToString());
+            }
+        }
+
         #region Przyciski
-        private void button1_Click(object sender, EventArgs e)
+        private void btnAddSubject_Click(object sender, EventArgs e)
         {
-            if (txtPrzedmiotAdd.Text == "") { }
-            else
-            {
-                string sql = "insert into planzajec.plan (przedmiot)values('" + txtPrzedmiotAdd.Text.ToUpper() + "');" +
-                         "insert into planzajec.lacznik (idplan,idczas,idstatystyki)values(last_insert_id(),3,1)";
-                string opisMwssageBox = "Przedmiot dodany";
-                string opisElse = "Pole - Przedmiot - Musi być wypełnione";
-                Dodaj(sql, opisMwssageBox, opisElse);
-                OdswiezSiatke(wyszukaniePrzedmiot, dgGridPrzedmiot);
-            }
-            CzyscPola();
-        }
+          
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            if (txtCzasAdd.Text != "")
+            foreach (var r in FunctionClassSubject.getAll())
             {
-                MySqlConnection laczBaze = new MySqlConnection(konfiguracja);
-                MySqlCommand zapytanie = laczBaze.CreateCommand();
-                MySqlCommand zapytanie2 = laczBaze.CreateCommand();
-                MySqlTransaction transakcja;
-                laczBaze.Open();
-                transakcja = laczBaze.BeginTransaction(IsolationLevel.ReadCommitted);
-                zapytanie.Connection = laczBaze;
-                zapytanie.Transaction = transakcja;
-                try
+                if (r.SubjectDescription == txtPrzedmiotAdd.Text)
                 {
-                    zapytanie.CommandText = "insert into planzajec.czas (czas)values('" + txtCzasAdd.Text.ToUpper() + "');" +
-                         "insert into planzajec.lacznik (idplan,idczas,idstatystyki)values(1,last_insert_id(),1)";
-                    zapytanie.ExecuteNonQuery();
-                    transakcja.Commit();
-                    MessageBox.Show("Nowy Czas dodany");
-                }
-                catch (Exception komunikat)
-                {
-                    MessageBox.Show(komunikat.Message);
-                    transakcja.Rollback();
-                    laczBaze.Close();
+                    MessageBox.Show("Taka nazwa już istnieje w bazie danych");
+                    txtPrzedmiotAdd.Text = "";
                 }
             }
-            OdswiezSiatke(wyszukanieCzas, dgGridCzas);
-            CzyscPola();
-        }
 
-        private void dgViewPrzedmiot_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0)
+            if (txtPrzedmiotAdd.Text != "")
             {
-               
-                id = Convert.ToInt32(dgGridPrzedmiot.Rows[e.RowIndex].Cells[0].Value);
-                if(this.Width==670)
-                {
-                    if(txtSubjectOne.ReadOnly==false) txtSubjectOne.Text = dgGridPrzedmiot.Rows[e.RowIndex].Cells[1].Value.ToString().ToUpper();
-                }
-                else
-                txtPrzedmiot.Text = dgGridPrzedmiot.Rows[e.RowIndex].Cells[1].Value.ToString().ToUpper();
-              //  MiddleForm();
-                UnvisibleLabelEnd();
-                txtCzas.Visible = true;
-            }
-           
-
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            
-            Wyszukanie(dgGridPrzedmiot, wyszukaniePrzedmiot);
-            Wyszukanie(dgGridCzas, wyszukanieCzas);
-            Ukryj();
-            dgGridPrzedmiot.Rows.ToString().ToUpper();
-        }
-
-        private void dgViewCzas_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            id = Convert.ToInt32(dgGridCzas.Rows[e.RowIndex].Cells[0].Value);
-            txtCzas.Text = dgGridCzas.Rows[e.RowIndex].Cells[1].Value.ToString();
-            MiddleForm();
-            txtCzas.Visible = true;
-            UnvisibleLabelEnd();
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            string ostrzezenie1 = "UWAGA! Czy chesz usunąć przedmiot?\nCzy chcesz kontynuować kasowanie?";
-            string sql1 = "  delete from planzajec.lacznik where idplan= " + id + ";delete from planzajec.plan where idplan = " + id + "; ";
-            string wiadomosc1 = "Usunięto przepis z programu";
-            if (txtPrzedmiot.Text == "") { }
-            else Usun(ostrzezenie1, sql1, wiadomosc1);
-
-            string ostrzezenie2 = "UWAGA! Czy chesz usunąć Czas?\nCzy chcesz kontynuować kasowanie?";
-            string sql2 = "  delete from planzajec.lacznik where idczas= " + id + ";delete from planzajec.czas where idczas = " + id + "; ";
-            string wiadomosc2 = "Usunięto czas z programu";
-            if (txtCzas.Text == "") { }
-            else Usun(ostrzezenie2, sql2, wiadomosc2);
-            OdswiezSiatke(wyszukaniePrzedmiot, dgGridPrzedmiot);
-            OdswiezSiatke(wyszukanieCzas, dgGridCzas);
-            CzyscPola();
-            UnvisibleLabelEnd();
-        }
-
-        private void btnModyfikuj_Click(object sender, EventArgs e)
-        {
-            string sql = "Update planzajec.plan set przedmiot='" + txtPrzedmiot.Text + "' where idplan=" + id + ";" +
-
-                            "update planzajec.lacznik set idplan  =" + id + " where idplan= " + id + "";
-            string sql2 = "Update planzajec.czas set czas='" + txtCzas.Text + "' where idczas=" + id + ";" +
-
-                            "update planzajec.lacznik set idczas  =" + id + " where idczas= " + id + "";
-            if (txtPrzedmiot.Text == "") { }
-            else
-            {
-                Modyfikacja(txtPrzedmiot, sql);
-                OdswiezSiatke(wyszukaniePrzedmiot, dgGridPrzedmiot);
-            }
-            if (txtCzas.Text == "") { }
-            else
-            {
-                Modyfikacja(txtCzas, sql2);
-                OdswiezSiatke(wyszukanieCzas, dgGridCzas);
-            }
-            UnvisibleLabelEnd();
-        }
-        #endregion
-        #region Funkcje
-        public void Wyszukanie(DataGridView nazwasiatki, string sql)
-        {
-            MySqlConnection laczBaze = new MySqlConnection(konfiguracja);
-            MySqlCommand zapytania = new MySqlCommand(sql, laczBaze);
-            try
-            {
-                MySqlDataAdapter moja = new MySqlDataAdapter();
-                moja.SelectCommand = zapytania;
-                DataTable tabela = new DataTable();
-                moja.Fill(tabela);
-                BindingSource zrodlo = new BindingSource();
-                zrodlo.DataSource = tabela;
-                nazwasiatki.DataSource = zrodlo;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            laczBaze.Close();
-        }
-
-        public void Dodaj(string sql, string opisMessageBox, string opisElse)
-        {
-            if (txtPrzedmiotAdd != null)
-            {
-                MySqlConnection laczBaze = new MySqlConnection(konfiguracja);
-                MySqlCommand zapytanie = laczBaze.CreateCommand();
-                MySqlTransaction transakcja;
-                laczBaze.Open();
-                transakcja = laczBaze.BeginTransaction(IsolationLevel.ReadCommitted);
-                zapytanie.Connection = laczBaze;
-                zapytanie.Transaction = transakcja;
-                try
-                {
-                    zapytanie.CommandText = sql;
-                    zapytanie.ExecuteNonQuery();
-                    transakcja.Commit();
-                    MessageBox.Show(opisMessageBox);
-                }
-                catch (Exception komunikat)
-                {
-                    MessageBox.Show(komunikat.Message);
-                    transakcja.Rollback();
-                    laczBaze.Close();
-                }
+                Subject model = new Subject();
+                model.SubjectDescription = txtPrzedmiotAdd.Text;
+                FunctionClassSubject.add(model);
+                filldgSubject(dgGridPrzedmiot);
+                MessageBox.Show("Dodano przedmiot!!!");
+                txtPrzedmiotAdd.Text = "";
             }
             else
             {
-                MessageBox.Show(opisElse);
+                MessageBox.Show("Podaj nazwę Przedmiotu");
             }
         }
 
-        public void Ukryj()
+        private void btnAddCzas_Click(object sender, EventArgs e)
         {
-            dgGridPrzedmiot.Columns[0].Visible = false;
-            dgGridCzas.Columns["idczas"].Visible = false;
-        }
-
-        public void Usun(string ostrzezenie, string sql, string wiadomosc)
-        {
-            if (txtPrzedmiot.Text != "" || txtCzas.Text != "")
+            foreach (var r in FunctionClassTime.getAll())
             {
-                MySqlConnection laczBaze = new MySqlConnection(konfiguracja);
-                MySqlCommand zapytanie = laczBaze.CreateCommand();
-                MySqlTransaction transakcja;
-                laczBaze.Open();
-                transakcja = laczBaze.BeginTransaction(IsolationLevel.ReadCommitted);
-                zapytanie.Connection = laczBaze;
-                zapytanie.Transaction = transakcja;
-                try
+                if (r.TimeDuration == int.Parse(txtTimeAdd.Text))
                 {
-                    if (MessageBox.Show(ostrzezenie, "UWAGA", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-                    {
-                        zapytanie.CommandText = sql;
-                        zapytanie.ExecuteNonQuery();
-                        transakcja.Commit();
-                        MessageBox.Show(wiadomosc);
-                    }
-                }
-                catch (Exception komunikat)
-                {
-                    MessageBox.Show(komunikat.Message);
-                    transakcja.Rollback();
-                    laczBaze.Close();
+                    MessageBox.Show("Taka nazwa już istnieje w bazie danych");
+                    txtTimeAdd.Text = "";
                 }
             }
-        }
-
-        public void OdswiezSiatke(string sql, DataGridView nazwaSiatki)
-        {
-            MySqlConnection laczBaze = new MySqlConnection(konfiguracja);
-            MySqlCommand zapytanie = new MySqlCommand(sql, laczBaze);
-            try
+            int przeliczona;
+            if ( txtTimeAdd.Text != "" && int.TryParse(txtTimeAdd.Text, out przeliczona))
             {
-                laczBaze.Open();
-                MySqlDataAdapter moja = new MySqlDataAdapter();
-                moja.SelectCommand = zapytanie;
-                DataTable tabela = new DataTable();
-                moja.Fill(tabela);
-                BindingSource zrodlo = new BindingSource();
-                zrodlo.DataSource = tabela;
-                nazwaSiatki.DataSource = zrodlo;
+                Time model = new Time();
+                model.TimeDuration = przeliczona;
+                FunctionClassTime.add(model);
+                filldgTime(dgGridCzas);
+                MessageBox.Show("Dodano czas!!!");
+                txtTimeAdd.Text = "";
             }
-            catch (Exception komunikat)
+            else
             {
-                MessageBox.Show(komunikat.Message);
+                MessageBox.Show("Wpisz czas");
             }
-            laczBaze.Close();
-        }
-
-        public void MiddleForm()
-        {
-            this.Width = 318;
-            this.Height = 358;
-        }
-
-        public void BigForm()
-        {
-            this.Width = 318;
-            this.Height = 463;
-        }
-
-        public void SmallForm()
-        {
-            this.Width = 318;
-            this.Height = 155;
-        }
-
-        public void CzyscPola()
-        {
-            txtCzasAdd.Text = "";
-            txtPrzedmiotAdd.Text = "";
-            txtPrzedmiot.Text = "";
-            txtCzas.Text = "";
-        }
-        public void UnvisibleLabelEnd()
-        {
-            lblEnd.Visible = false;
-        }
-
-        public void Modyfikacja(TextBox nazwaTextbox, string sql)
-        {
-            if (txtPrzedmiot.Text != "" && txtCzas.Text != "")
-            {
-                MessageBox.Show("Mozna edytować jeden element na raz");
-            }
-            else if (txtPrzedmiot.Text != "" || txtCzas.Text != "")
-            {
-                MySqlConnection laczBaze = new MySqlConnection(konfiguracja);
-                MySqlCommand zapytanie = laczBaze.CreateCommand();
-                MySqlTransaction transakcja;
-                laczBaze.Open();
-                transakcja = laczBaze.BeginTransaction(IsolationLevel.ReadCommitted);
-                zapytanie.Connection = laczBaze;
-                zapytanie.Transaction = transakcja;
-                try
-                {
-                    txtPrzedmiot.Text.Replace(@"\", @"\\");
-                    txtPrzedmiot.Text.Replace(@"'", @"''");
-                    zapytanie.CommandText = sql;
-                    zapytanie.ExecuteNonQuery();
-                    transakcja.Commit();
-                    txtPrzedmiot.Text.Replace(@"\\", @"\");
-                    txtPrzedmiot.Text.Replace(@"''", @"'");
-                    MessageBox.Show("Modyfikacja powiodła się");
-                }
-                catch (Exception komunikat)
-                {
-                    MessageBox.Show(komunikat.Message);
-                    transakcja.Rollback();
-                    laczBaze.Close();
-                }
-            }
-        }
-        #endregion
-        int pomiarCzasu;
-        int sekundy;
-        int minuty=0, godziny=0;
-        
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            sekundy--;
-            if (sekundy ==00&&minuty>0)
-            {
-                minuty--;
-                sekundy = 59;
-            }else { }
-            if (minuty == 00&&godziny>0)
-            {
-                godziny--;
-                minuty = 59;
-            }
-            lblWyswietlacz.Text = godziny + ":" + minuty + ":" + pomiarCzasu;
-            if (godziny < 10 )
-
-                lblWyswietlacz.Text = "0" + godziny + ":" + minuty + ":" + sekundy;
-            if (minuty < 10 )
-                lblWyswietlacz.Text = "0"+godziny + ":" + "0" + minuty + ":" + sekundy;
-            if (sekundy < 10)
-                lblWyswietlacz.Text = "0"+godziny + ":"  +"0"+ minuty + ":" +"0"+ sekundy;
-            
-
-            if (godziny==0&&minuty==0&&sekundy==0)
-            {
-                Show();
-                timer1.Enabled = false;
-                MiddleForm();
-                lblEnd.Text = "Koniec";
-                lblEnd.Visible = true;
-                txtCzas.Visible = true;
-            }
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            btnAddCzas.Visible = true;
-            btnAddPrzedmiot.Visible = true;
-            txtCzasAdd.Visible = true;
-            txtPrzedmiotAdd.Visible = true;
-            BigForm();
-            UnvisibleLabelEnd();
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            txtCzas.Visible = false;
-            pomiarCzasu = Convert.ToInt32(txtCzas.Text);
-            sekundy = pomiarCzasu;
-            timer1.Interval = 1000;
-            timer1.Start();
-            Form1 nowa = new Form1();
-            SmallForm();
-            UnvisibleLabelEnd();
-
-        }
-
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-            timer1.Stop();
-            MiddleForm();
-            txtCzas.Visible = true;
-            UnvisibleLabelEnd();
-        }
-
-        private void txtSubjectOne_Click(object sender, EventArgs e)
-        {
-            txtSubjectOne.ReadOnly = false;
         }
 
         private void btnPause_Click(object sender, EventArgs e)
         {
-            if (timer1.Enabled == true)
+            if (lblWyswietlacz.Text == "00:00:00" && timer1.Enabled == false)
             {
-                txtPrzedmiot.Text = "" ;
-                timer1.Stop();
-                
 
+            }
+            else if (timer1.Enabled == true)
+            {
+
+                timer1.Stop();
                 btnPause.Text = "Uruchom";
+                this.btnPause.Font = new System.Drawing.Font("Calibri", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+                this.btnStart.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+
             }
             else
             {
                 timer1.Start();
                 btnPause.Text = "Pause";
+                this.btnPause.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+                this.btnStart.Font = new System.Drawing.Font("Calibri", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+
+            }
+        }
+
+        private void btnSchema_Click_1(object sender, EventArgs e)
+        {
+            pomiarCzasu = 0;
+            txtPrzedmiot.Text = "";
+            txtCzas.Text = "";
+            string buttonPlan = "Plan";
+            if (btnSchema.Text == buttonPlan)
+            {
+                SchemaForm();
+                buttonPlan = "Zmiejsz";
+                btnSchema.Text = buttonPlan;
+                // lblWyswietlaczSchema.Visible = true;
+            }
+            else
+            {
+                lblWyswietlaczSchema.Visible = false;
+                MiddleForm();
+                buttonPlan = "Plan";
+                btnSchema.Text = buttonPlan;
+                foreach (Control p in Controls)
+                {
+                    if (p is TextBox) ((TextBox)p).ReadOnly = true;
+                }
+            }
+        }
+
+        private void dgViewPrzedmiot_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+           
+            if (e.RowIndex >= 0)
+            {
+                idSubject = Convert.ToInt32(dgGridPrzedmiot.Rows[e.RowIndex].Cells[0].Value);
+                if (this.Width == 700)
+                {
+                    foreach (Control p in gbPrzedmiot.Controls)
+                    {
+                        if (p is TextBox && ((TextBox)p).ReadOnly == false && p.Text == "")
+                        {
+                            p.Text = dgGridPrzedmiot.Rows[e.RowIndex].Cells[1].Value.ToString().ToUpper();
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    txtPrzedmiot.Text = dgGridPrzedmiot.Rows[e.RowIndex].Cells[1].Value.ToString();
+                    MiddleForm();
+                }
             }
 
+         // dgGridPrzedmiot.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.SlateGray;
+            
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            dgGridPrzedmiot.Rows.ToString().ToUpper();
+            dgGridPrzedmiot.Columns.Add("id", "Id");
+            dgGridPrzedmiot.Columns.Add("imie", "Przedmiot");
+            dgGridPrzedmiot.Columns.Add("stat", "Statystyka w min");
+            dgGridCzas.Columns.Add("pochodzenie", "Id");
+            dgGridCzas.Columns.Add("telefon", "Czas");
+
+            dgGridPrzedmiot.Columns[0].Visible = false;
+            dgGridCzas.Columns[0].Visible = false;
+            filldgSubject(dgGridPrzedmiot);
+            filldgTime(dgGridCzas);
+            
+        }
+
+        private void dgViewCzas_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                idTime = Convert.ToInt32(dgGridCzas.Rows[e.RowIndex].Cells[0].Value);
+                if (this.Width == 700)
+                {
+                    foreach (Control p in gbCzas.Controls)
+                    {
+                        if (p is TextBox && ((TextBox)p).ReadOnly == false && p.Text == "")
+                        {
+                            p.Text = dgGridCzas.Rows[e.RowIndex].Cells[1].Value.ToString().ToUpper();
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    txtCzas.Text = dgGridCzas.Rows[e.RowIndex].Cells[1].Value.ToString();
+                    MiddleForm();
+                }
+                dgGridCzas.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.SlateGray;
+            }
+
+            // txtCzas.Visible = true;
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+
+
+
+            if (txtPrzedmiot.Text != "")
+            {
+                var z = FunctionClassSubject.getById(idSubject);
+                FunctionClassSubject.del(z.Id);
+                MessageBox.Show("Usnięty!!");
+                filldgSubject(dgGridPrzedmiot);
+                txtPrzedmiot.Text = "";
+                if (txtPrzedmiot.Text == "") dgGridPrzedmiot.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.White;
+            }
+            else if (txtCzas.Text != "")
+            {
+                var zm = FunctionClassTime.getById(idTime);
+                FunctionClassTime.del(zm.Id);
+                MessageBox.Show("Usnięty!!");
+                Form1.filldgTime(dgGridCzas);
+                txtCzas.Text = "";
+                 dgGridCzas.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.White;
+            }
+            else
+            {
+                MessageBox.Show("Nie można usunąć pustki");
+            }
+        }
+
+        private void btnStop_Click_1(object sender, EventArgs e)
+        {
+            timer1.Stop();
+            btnPause.Text = "Pause";
+            MiddleForm();
+            txtCzas.Visible = true;
+            lblWyswietlacz.Text = "00:00:00";
+            pomiarCzasu = 0;
+            txtCzas.Text = "";
+            txtPrzedmiot.Text = "Zakończone przed czasem".ToUpper();
+            this.Location = new System.Drawing.Point(500, 200);
+            btnSchema.Text = "Plan";
+            this.btnPause.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btnStart.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+        }
+
+        private void btnModification_Click(object sender, EventArgs e)
+        {
+            if (txtPrzedmiot.ReadOnly == true)
+            {
+                txtPrzedmiot.ReadOnly = false;
+                txtCzas.ReadOnly = false;
+            }
+            else
+            {
+                if (txtPrzedmiot.Text != "")
+                {
+                    var z = FunctionClassSubject.getById(idSubject);
+                    z.SubjectDescription = txtPrzedmiot.Text;
+                    FunctionClassSubject.update(z);
+                    MessageBox.Show("Zmodyfikowano!!");
+                    filldgSubject(dgGridPrzedmiot);
+                    txtPrzedmiot.ReadOnly = true;
+                    txtCzas.ReadOnly = true;
+                }
+                else if (txtCzas.Text != "")
+                {
+                    var zm = FunctionClassTime.getById(idTime);
+                    zm.TimeDuration = int.Parse(txtCzas.Text);
+                    FunctionClassTime.update(zm);
+                    MessageBox.Show("Zmodyfikowano!!");
+                    Form1.filldgTime(dgGridCzas);
+                    txtCzas.ReadOnly = true;
+                    txtPrzedmiot.ReadOnly = true;
+                }
+                else
+                {
+                    MessageBox.Show("Nie można zostawić pustego  ");
+                }
+            }
+        }
+
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            sekundy = 0; minuty = 0; godziny = 0;
+            this.btnStart.Font = new System.Drawing.Font("Calibri", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btnPause.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+
+            btnPause.Text = "Pauza";
+
+            LoadSchema();
+            if (txtCzas.Text == "") { }
+            else
+            {
+                txtCzas.Visible = false;
+                pomiarCzasu = Convert.ToInt32(txtCzas.Text);
+                minuty = pomiarCzasu;
+                timer1.Interval = 1000;
+                timer1.Start();
+                Form1 nowa = new Form1();
+                SmallForm();
+                this.Location = new System.Drawing.Point(0, 0);
+            }
+        }
+
+        private void btnafterAdd_Click(object sender, EventArgs e)
+        {
+
+            btnAddCzas.Visible = true;
+            btnAddPrzedmiot.Visible = true;
+            txtTimeAdd.Visible = true;
+            txtPrzedmiotAdd.Visible = true;
+            BigForm();
+        }
+
+        public void Display(Label nazwa)
+        {
+
+
+            if (minuty >= 60)
+            {
+                godziny++;
+                minuty = minuty - 60;
+            }
+            if (minuty == 00 && godziny > 0)
+            {
+                godziny--;
+                minuty = 59;
+            }
+            if (sekundy == 00 && minuty > 0)
+            {
+                minuty--;
+                sekundy = 59;
+            }
+            else { sekundy--; }
+            nazwa.Text = godziny + ":" + minuty + ":" + sekundy;
+
+            if (sekundy < 10 && godziny < 10 && minuty < 10)
+                nazwa.Text = "0" + godziny + ":" + "0" + minuty + ":" + "0" + sekundy;
+            if (minuty < 10 && godziny < 10 && sekundy > 9)
+                nazwa.Text = "0" + godziny + ":" + "0" + minuty + ":" + sekundy;
+
+            if (godziny < 10 && sekundy < 10 && minuty > 9)
+                nazwa.Text = "0" + godziny + ":" + minuty + ":" + 0 + sekundy;
+            if (godziny < 10 && sekundy > 9 && minuty > 9)
+                nazwa.Text = "0" + godziny + ":" + minuty + ":" + sekundy;
+           
+        }
+
+        public void LoadSchema()
+        {
+            if (this.Width == 700)
+            {
+                foreach (Control p in gbPrzedmiot.Controls)
+                {
+                    if (p is TextBox && ((TextBox)p).ReadOnly == false && p.Text != "")
+                    {
+                        txtPrzedmiot.Text = p.Text;
+                        p.Text = "";
+                        break;
+                    }
+                }
+                foreach (Control p in gbCzas.Controls)
+                {
+                    if (p is TextBox && ((TextBox)p).ReadOnly == false && p.Text != "")
+                    {
+
+                        dodajCzas += int.Parse(p.Text);
+                        txtCzas.Text = p.Text;
+                        p.Text = "";
+                        break;
+
+                    }
+                }
+            }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            Display(lblWyswietlacz);
+
+            if (godziny == 0 && minuty == 0 && sekundy == 0)
+            {
+                this.Location = new System.Drawing.Point(500, 200);
+                timer1.Enabled = false;
+                foreach (Control p in gbCzas.Controls)
+                {
+                    if ((p is TextBox) && ((TextBox)p).ReadOnly == false && p.Text != "")
+                    {
+                        LoadSchema();
+                        SchemaForm();
+                        txtPrzedmiot.Text = "Ukonczona fragment Schematu".ToUpper();
+                        break;
+                    }
+                    else if ((p is TextBox) && ((TextBox)p).ReadOnly == true)
+                    {
+                        LoadSchema();
+                        MiddleForm();
+                        btnSchema.Text = "Plan";
+                        break;
+                    }
+                }
+                lblEnd.Visible = true;
+                txtCzas.Visible = true;
+
+                if (txtPrzedmiot.Text == "Ukonczona fragment Schematu".ToUpper()) { (new System.Media.SoundPlayer("Computer_Magic.wav")).Play(); }
+                else
+                {
+                    int przeliczona;
+                    var z = FunctionClassSubject.getById(idSubject);
+
+                    if (int.TryParse(txtCzas.Text, out przeliczona))
+                    {
+                        z.Statystyka += przeliczona;
+                        FunctionClassSubject.update(z);
+                        filldgSubject(dgGridPrzedmiot);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Proszę wpisać cyfrę");
+                    }
+                    txtCzas.Text = "";
+                    txtPrzedmiot.Text = "Koniec";
+                    (new System.Media.SoundPlayer("Computer_Magic.wav")).Play();
+                }
+                lblWyswietlaczSchema.Text = dodajCzas.ToString() + "";
+            }
+        }
+        #endregion
+
+        public void MiddleForm()
+        {
+            this.Width = 320;
+            this.Height = 369;
+        }
+
+        public void BigForm()
+        {
+            this.Width = 320;
+            this.Height = 475;
+        }
+
+        public void SmallForm()
+        {
+            this.Width = 320;
+            this.Height = 160;
+        }
+
+        public void ClearMainField()
+        {
+            txtTimeAdd.Text = "";
+            txtPrzedmiotAdd.Text = "";
+            txtPrzedmiot.Text = "";
+            txtCzas.Text = "";
+        }
+
+        #region Schema And Function 
+
+        public void SchemaForm()
+        {
+            this.Width = 700;
+            this.Height = 372;
+        }
+
+        public void UnlockBlockField(TextBox nazwa)
+        {
+            if (nazwa.ReadOnly == true) nazwa.ReadOnly = false;
+            else if (nazwa.ReadOnly == false && nazwa.Text == "") nazwa.ReadOnly = true;
+        }
+
+        public void ClearFieldSchema(TextBox nazwa)
+        {
+            if (nazwa.ReadOnly == false)
+                nazwa.Text = "";
+        }
+
+        public void AddSharp(TextBox nazwa)
+        {
+            if (nazwa.Text == "" && nazwa.ReadOnly == true) nazwa.Text = "+";
+        }
+
+        private void txtSubjectOne_Click(object sender, EventArgs e)
+        {
+            UnlockBlockField(txtSubjectOne);
+            ClearFieldSchema(txtSubjectOne);
+            AddSharp(txtSubjectOne);
+        }
+
+        private void txtSubjectTwo_Click(object sender, EventArgs e)
+        {
+            UnlockBlockField(txtSubjectTwo);
+            ClearFieldSchema(txtSubjectTwo);
+            AddSharp(txtSubjectTwo);
+        }
+
+        private void txtSubjectThree_Click(object sender, EventArgs e)
+        {
+            UnlockBlockField(txtSubjectThree);
+            ClearFieldSchema(txtSubjectThree);
+            AddSharp(txtSubjectThree);
+        }
+
+        private void txtSubjectFour_Click(object sender, EventArgs e)
+        {
+            UnlockBlockField(txtSubjectFour);
+            ClearFieldSchema(txtSubjectFour);
+            AddSharp(txtSubjectFour);
+        }
+
+        private void txtSubjectFive_Click(object sender, EventArgs e)
+        {
+            UnlockBlockField(txtSubjectFive);
+            ClearFieldSchema(txtSubjectFive);
+            AddSharp(txtSubjectFive);
+        }
+
+        private void txtSubjectSix_Click(object sender, EventArgs e)
+        {
+            UnlockBlockField(txtSubjectSix);
+            ClearFieldSchema(txtSubjectSix);
+            AddSharp(txtSubjectSix);
+        }
+
+        private void txtSubjectSeven_Click(object sender, EventArgs e)
+        {
+            UnlockBlockField(txtSubjectSeven);
+            ClearFieldSchema(txtSubjectSeven);
+            AddSharp(txtSubjectSeven);
+        }
+
+        private void txtSubjectEight_Click(object sender, EventArgs e)
+        {
+            UnlockBlockField(txtSubjectEight);
+            ClearFieldSchema(txtSubjectEight);
+            AddSharp(txtSubjectEight);
+        }
+
+        private void txtSubjectNine_Click(object sender, EventArgs e)
+        {
+            UnlockBlockField(txtSubjectNine);
+            ClearFieldSchema(txtSubjectNine);
+            AddSharp(txtSubjectNine);
+        }
+
+        private void txtTimeOne_Click(object sender, EventArgs e)
+        {
+            UnlockBlockField(txtTimeOne);
+            ClearFieldSchema(txtTimeOne);
+            AddSharp(txtTimeOne);
+        }
+
+        private void txtTimeTwo_Click(object sender, EventArgs e)
+        {
+            UnlockBlockField(txtTimeTwo);
+            ClearFieldSchema(txtTimeTwo);
+            AddSharp(txtTimeTwo);
+        }
+
+        private void txtTimeThree_Click(object sender, EventArgs e)
+        {
+            UnlockBlockField(txtTimeThree);
+            ClearFieldSchema(txtTimeThree);
+            AddSharp(txtTimeThree);
+        }
+
+        private void txtTimeFour_Click(object sender, EventArgs e)
+        {
+            UnlockBlockField(txtTimeFour);
+            ClearFieldSchema(txtTimeFour);
+            AddSharp(txtTimeFour);
+        }
+
+        private void txtTimeFive_Click(object sender, EventArgs e)
+        {
+            UnlockBlockField(txtTimeFive);
+            ClearFieldSchema(txtTimeFive);
+            AddSharp(txtTimeFive);
+        }
+
+        private void txtTimeSix_Click(object sender, EventArgs e)
+        {
+            UnlockBlockField(txtTimeSix);
+            ClearFieldSchema(txtTimeSix);
+            AddSharp(txtTimeSix);
+        }
+
+        private void txtTimeSeven_Click(object sender, EventArgs e)
+        {
+            UnlockBlockField(txtTimeSeven);
+            ClearFieldSchema(txtTimeSeven);
+            AddSharp(txtTimeSeven);
+        }
+
+        private void txtTimeEight_Click(object sender, EventArgs e)
+        {
+            UnlockBlockField(txtTimeEight);
+            ClearFieldSchema(txtTimeEight);
+            AddSharp(txtTimeEight);
+        }
+
+        private void txtTimeNine_Click(object sender, EventArgs e)
+        {
+            UnlockBlockField(txtTimeNine);
+            ClearFieldSchema(txtTimeNine);
+            AddSharp(txtTimeNine);
+        }
+
+        #endregion
     }
 }
