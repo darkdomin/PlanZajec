@@ -15,23 +15,11 @@ namespace PlanZajec
     public partial class Form1 : Form
     {
 
-        int idSubject, idTime, sekundy = 0, minuty = 0, godziny = 0, pomiarCzasu, dodajCzas = 0;
+        int idSubject, idTime, seconds = 0, minutes = 0, hours = 0, timeMeasurement, addTime = 0;
 
         public Form1()
         {
             InitializeComponent();
-
-            //dgGridPrzedmiot.Columns.Add("id", "Id");
-            //dgGridPrzedmiot.Columns.Add("imie", "Przedmiot");
-            //dgGridPrzedmiot.Columns.Add("stat", "Statystyka w min");
-            //dgGridCzas.Columns.Add("pochodzenie", "Id");
-            //dgGridCzas.Columns.Add("telefon", "Czas");
-
-            //dgGridPrzedmiot.Columns[0].Visible = false;
-            //dgGridCzas.Columns[0].Visible = false;
-
-            //filldgSubject(dgGridPrzedmiot);
-            //filldgTime(dgGridCzas);
         }
 
         public static void filldgSubject(DataGridView dg)
@@ -55,25 +43,23 @@ namespace PlanZajec
         #region Przyciski
         private void btnAddSubject_Click(object sender, EventArgs e)
         {
-          
-
             foreach (var r in FunctionClassSubject.getAll())
             {
-                if (r.SubjectDescription == txtPrzedmiotAdd.Text)
+                if (r.SubjectDescription == txtSubjectAdd.Text)
                 {
                     MessageBox.Show("Taka nazwa już istnieje w bazie danych");
-                    txtPrzedmiotAdd.Text = "";
+                    txtSubjectAdd.Text = "";
                 }
             }
 
-            if (txtPrzedmiotAdd.Text != "")
+            if (txtSubjectAdd.Text != "")
             {
                 Subject model = new Subject();
-                model.SubjectDescription = txtPrzedmiotAdd.Text;
+                model.SubjectDescription = txtSubjectAdd.Text;
                 FunctionClassSubject.add(model);
-                filldgSubject(dgGridPrzedmiot);
+                filldgSubject(dgGridSubject);
                 MessageBox.Show("Dodano przedmiot!!!");
-                txtPrzedmiotAdd.Text = "";
+                txtSubjectAdd.Text = "";
             }
             else
             {
@@ -97,7 +83,7 @@ namespace PlanZajec
                 Time model = new Time();
                 model.TimeDuration = przeliczona;
                 FunctionClassTime.add(model);
-                filldgTime(dgGridCzas);
+                filldgTime(dgGridTime);
                 MessageBox.Show("Dodano czas!!!");
                 txtTimeAdd.Text = "";
             }
@@ -109,18 +95,16 @@ namespace PlanZajec
 
         private void btnPause_Click(object sender, EventArgs e)
         {
-            if (lblWyswietlacz.Text == "00:00:00" && timer1.Enabled == false)
+            if (lblDisplay.Text == "00:00:00" && timer1.Enabled == false)
             {
 
             }
             else if (timer1.Enabled == true)
             {
-
                 timer1.Stop();
                 btnPause.Text = "Uruchom";
                 this.btnPause.Font = new System.Drawing.Font("Calibri", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(238)));
                 this.btnStart.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-
             }
             else
             {
@@ -128,15 +112,14 @@ namespace PlanZajec
                 btnPause.Text = "Pause";
                 this.btnPause.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
                 this.btnStart.Font = new System.Drawing.Font("Calibri", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-
             }
         }
 
         private void btnSchema_Click_1(object sender, EventArgs e)
         {
-            pomiarCzasu = 0;
-            txtPrzedmiot.Text = "";
-            txtCzas.Text = "";
+            timeMeasurement = 0;
+            txtSubject.Text = "";
+            txtTime.Text = "";
             string buttonPlan = "Plan";
             if (btnSchema.Text == buttonPlan)
             {
@@ -147,7 +130,7 @@ namespace PlanZajec
             }
             else
             {
-                lblWyswietlaczSchema.Visible = false;
+                lblDisplaySchema.Visible = false;
                 MiddleForm();
                 buttonPlan = "Plan";
                 btnSchema.Text = buttonPlan;
@@ -160,97 +143,89 @@ namespace PlanZajec
 
         private void dgViewPrzedmiot_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-           
             if (e.RowIndex >= 0)
             {
-                idSubject = Convert.ToInt32(dgGridPrzedmiot.Rows[e.RowIndex].Cells[0].Value);
+                idSubject = Convert.ToInt32(dgGridSubject.Rows[e.RowIndex].Cells[0].Value);
                 if (this.Width == 700)
                 {
-                    foreach (Control p in gbPrzedmiot.Controls)
+                    foreach (Control p in gbSubject.Controls)
                     {
                         if (p is TextBox && ((TextBox)p).ReadOnly == false && p.Text == "")
                         {
-                            p.Text = dgGridPrzedmiot.Rows[e.RowIndex].Cells[1].Value.ToString().ToUpper();
+                            p.Text = dgGridSubject.Rows[e.RowIndex].Cells[1].Value.ToString().ToUpper();
                             break;
                         }
                     }
                 }
                 else
                 {
-                    txtPrzedmiot.Text = dgGridPrzedmiot.Rows[e.RowIndex].Cells[1].Value.ToString();
+                    txtSubject.Text = dgGridSubject.Rows[e.RowIndex].Cells[1].Value.ToString();
                     MiddleForm();
                 }
             }
-
-         // dgGridPrzedmiot.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.SlateGray;
-            
+          dgGridSubject.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.SlateGray;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            dgGridPrzedmiot.Rows.ToString().ToUpper();
-            dgGridPrzedmiot.Columns.Add("id", "Id");
-            dgGridPrzedmiot.Columns.Add("imie", "Przedmiot");
-            dgGridPrzedmiot.Columns.Add("stat", "Statystyka w min");
-            dgGridCzas.Columns.Add("pochodzenie", "Id");
-            dgGridCzas.Columns.Add("telefon", "Czas");
+            dgGridSubject.Rows.ToString().ToUpper();
+            dgGridSubject.Columns.Add("id", "Id");
+            dgGridSubject.Columns.Add("imie", "Przedmiot");
+            dgGridSubject.Columns.Add("stat", "Statystyka w min");
+            dgGridTime.Columns.Add("pochodzenie", "Id");
+            dgGridTime.Columns.Add("telefon", "Czas");
 
-            dgGridPrzedmiot.Columns[0].Visible = false;
-            dgGridCzas.Columns[0].Visible = false;
-            filldgSubject(dgGridPrzedmiot);
-            filldgTime(dgGridCzas);
-            
+            dgGridSubject.Columns[0].Visible = false;
+            dgGridTime.Columns[0].Visible = false;
+            filldgSubject(dgGridSubject);
+            filldgTime(dgGridTime);
         }
 
         private void dgViewCzas_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
-                idTime = Convert.ToInt32(dgGridCzas.Rows[e.RowIndex].Cells[0].Value);
+                idTime = Convert.ToInt32(dgGridTime.Rows[e.RowIndex].Cells[0].Value);
                 if (this.Width == 700)
                 {
-                    foreach (Control p in gbCzas.Controls)
+                    foreach (Control p in gbTime.Controls)
                     {
                         if (p is TextBox && ((TextBox)p).ReadOnly == false && p.Text == "")
                         {
-                            p.Text = dgGridCzas.Rows[e.RowIndex].Cells[1].Value.ToString().ToUpper();
+                            p.Text = dgGridTime.Rows[e.RowIndex].Cells[1].Value.ToString().ToUpper();
                             break;
                         }
                     }
                 }
                 else
                 {
-                    txtCzas.Text = dgGridCzas.Rows[e.RowIndex].Cells[1].Value.ToString();
+                    txtTime.Text = dgGridTime.Rows[e.RowIndex].Cells[1].Value.ToString();
                     MiddleForm();
                 }
-                dgGridCzas.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.SlateGray;
+                dgGridTime.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.SlateGray;
             }
-
-            // txtCzas.Visible = true;
+            // txtTime.Visible = true;
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-
-
-
-            if (txtPrzedmiot.Text != "")
+            if (txtSubject.Text != "")
             {
                 var z = FunctionClassSubject.getById(idSubject);
                 FunctionClassSubject.del(z.Id);
                 MessageBox.Show("Usnięty!!");
-                filldgSubject(dgGridPrzedmiot);
-                txtPrzedmiot.Text = "";
-                if (txtPrzedmiot.Text == "") dgGridPrzedmiot.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.White;
+                filldgSubject(dgGridSubject);
+                txtSubject.Text = "";
+                if (txtSubject.Text == "") dgGridSubject.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.White;
             }
-            else if (txtCzas.Text != "")
+            else if (txtTime.Text != "")
             {
                 var zm = FunctionClassTime.getById(idTime);
                 FunctionClassTime.del(zm.Id);
                 MessageBox.Show("Usnięty!!");
-                Form1.filldgTime(dgGridCzas);
-                txtCzas.Text = "";
-                 dgGridCzas.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.White;
+                Form1.filldgTime(dgGridTime);
+                txtTime.Text = "";
+                dgGridTime.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.White;
             }
             else
             {
@@ -263,11 +238,11 @@ namespace PlanZajec
             timer1.Stop();
             btnPause.Text = "Pause";
             MiddleForm();
-            txtCzas.Visible = true;
-            lblWyswietlacz.Text = "00:00:00";
-            pomiarCzasu = 0;
-            txtCzas.Text = "";
-            txtPrzedmiot.Text = "Zakończone przed czasem".ToUpper();
+            txtTime.Visible = true;
+            lblDisplay.Text = "00:00:00";
+            timeMeasurement = 0;
+            txtTime.Text = "";
+            txtSubject.Text = "Zakończone przed czasem".ToUpper();
             this.Location = new System.Drawing.Point(500, 200);
             btnSchema.Text = "Plan";
             this.btnPause.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -276,32 +251,32 @@ namespace PlanZajec
 
         private void btnModification_Click(object sender, EventArgs e)
         {
-            if (txtPrzedmiot.ReadOnly == true)
+            if (txtSubject.ReadOnly == true)
             {
-                txtPrzedmiot.ReadOnly = false;
-                txtCzas.ReadOnly = false;
+                txtSubject.ReadOnly = false;
+                txtTime.ReadOnly = false;
             }
             else
             {
-                if (txtPrzedmiot.Text != "")
+                if (txtSubject.Text != "")
                 {
                     var z = FunctionClassSubject.getById(idSubject);
-                    z.SubjectDescription = txtPrzedmiot.Text;
+                    z.SubjectDescription = txtSubject.Text;
                     FunctionClassSubject.update(z);
                     MessageBox.Show("Zmodyfikowano!!");
-                    filldgSubject(dgGridPrzedmiot);
-                    txtPrzedmiot.ReadOnly = true;
-                    txtCzas.ReadOnly = true;
+                    filldgSubject(dgGridSubject);
+                    txtSubject.ReadOnly = true;
+                    txtTime.ReadOnly = true;
                 }
-                else if (txtCzas.Text != "")
+                else if (txtTime.Text != "")
                 {
                     var zm = FunctionClassTime.getById(idTime);
-                    zm.TimeDuration = int.Parse(txtCzas.Text);
+                    zm.TimeDuration = int.Parse(txtTime.Text);
                     FunctionClassTime.update(zm);
                     MessageBox.Show("Zmodyfikowano!!");
-                    Form1.filldgTime(dgGridCzas);
-                    txtCzas.ReadOnly = true;
-                    txtPrzedmiot.ReadOnly = true;
+                    Form1.filldgTime(dgGridTime);
+                    txtTime.ReadOnly = true;
+                    txtSubject.ReadOnly = true;
                 }
                 else
                 {
@@ -312,19 +287,19 @@ namespace PlanZajec
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            sekundy = 0; minuty = 0; godziny = 0;
+            seconds = 0; minutes = 0; hours = 0;
             this.btnStart.Font = new System.Drawing.Font("Calibri", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.btnPause.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
 
             btnPause.Text = "Pauza";
 
             LoadSchema();
-            if (txtCzas.Text == "") { }
+            if (txtTime.Text == "") { }
             else
             {
-                txtCzas.Visible = false;
-                pomiarCzasu = Convert.ToInt32(txtCzas.Text);
-                minuty = pomiarCzasu;
+                txtTime.Visible = false;
+                timeMeasurement = Convert.ToInt32(txtTime.Text);
+                minutes = timeMeasurement;
                 timer1.Interval = 1000;
                 timer1.Start();
                 Form1 nowa = new Form1();
@@ -336,67 +311,64 @@ namespace PlanZajec
         private void btnafterAdd_Click(object sender, EventArgs e)
         {
 
-            btnAddCzas.Visible = true;
+            btnAddTime.Visible = true;
             btnAddPrzedmiot.Visible = true;
             txtTimeAdd.Visible = true;
-            txtPrzedmiotAdd.Visible = true;
+            txtSubjectAdd.Visible = true;
             BigForm();
         }
 
         public void Display(Label nazwa)
         {
-
-
-            if (minuty >= 60)
+            if (minutes >= 60)
             {
-                godziny++;
-                minuty = minuty - 60;
+                hours++;
+                minutes = minutes - 60;
             }
-            if (minuty == 00 && godziny > 0)
+            if (minutes == 00 && hours > 0)
             {
-                godziny--;
-                minuty = 59;
+                hours--;
+                minutes = 59;
             }
-            if (sekundy == 00 && minuty > 0)
+            if (seconds == 00 && minutes > 0)
             {
-                minuty--;
-                sekundy = 59;
+                minutes--;
+                seconds = 59;
             }
-            else { sekundy--; }
-            nazwa.Text = godziny + ":" + minuty + ":" + sekundy;
+            else { seconds--; }
+            nazwa.Text = hours + ":" + minutes + ":" + seconds;
 
-            if (sekundy < 10 && godziny < 10 && minuty < 10)
-                nazwa.Text = "0" + godziny + ":" + "0" + minuty + ":" + "0" + sekundy;
-            if (minuty < 10 && godziny < 10 && sekundy > 9)
-                nazwa.Text = "0" + godziny + ":" + "0" + minuty + ":" + sekundy;
+            if (seconds < 10 && hours < 10 && minutes < 10)
+                nazwa.Text = "0" + hours + ":" + "0" + minutes + ":" + "0" + seconds;
+            if (minutes < 10 && hours < 10 && seconds > 9)
+                nazwa.Text = "0" + hours + ":" + "0" + minutes + ":" + seconds;
 
-            if (godziny < 10 && sekundy < 10 && minuty > 9)
-                nazwa.Text = "0" + godziny + ":" + minuty + ":" + 0 + sekundy;
-            if (godziny < 10 && sekundy > 9 && minuty > 9)
-                nazwa.Text = "0" + godziny + ":" + minuty + ":" + sekundy;
-           
+            if (hours < 10 && seconds < 10 && minutes > 9)
+                nazwa.Text = "0" + hours + ":" + minutes + ":" + 0 + seconds;
+            if (hours < 10 && seconds > 9 && minutes > 9)
+                nazwa.Text = "0" + hours + ":" + minutes + ":" + seconds;
         }
 
         public void LoadSchema()
         {
             if (this.Width == 700)
             {
-                foreach (Control p in gbPrzedmiot.Controls)
+                foreach (Control p in gbSubject.Controls)
                 {
                     if (p is TextBox && ((TextBox)p).ReadOnly == false && p.Text != "")
                     {
-                        txtPrzedmiot.Text = p.Text;
+                        txtSubject.Text = p.Text;
                         p.Text = "";
                         break;
                     }
                 }
-                foreach (Control p in gbCzas.Controls)
+                foreach (Control p in gbTime.Controls)
                 {
                     if (p is TextBox && ((TextBox)p).ReadOnly == false && p.Text != "")
                     {
 
-                        dodajCzas += int.Parse(p.Text);
-                        txtCzas.Text = p.Text;
+                        addTime += int.Parse(p.Text);
+                        txtTime.Text = p.Text;
                         p.Text = "";
                         break;
 
@@ -407,19 +379,19 @@ namespace PlanZajec
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            Display(lblWyswietlacz);
+            Display(lblDisplay);
 
-            if (godziny == 0 && minuty == 0 && sekundy == 0)
+            if (hours == 0 && minutes == 0 && seconds == 0)
             {
                 this.Location = new System.Drawing.Point(500, 200);
                 timer1.Enabled = false;
-                foreach (Control p in gbCzas.Controls)
+                foreach (Control p in gbTime.Controls)
                 {
                     if ((p is TextBox) && ((TextBox)p).ReadOnly == false && p.Text != "")
                     {
                         LoadSchema();
                         SchemaForm();
-                        txtPrzedmiot.Text = "Ukonczona fragment Schematu".ToUpper();
+                        txtSubject.Text = "Ukonczona fragment Schematu".ToUpper();
                         break;
                     }
                     else if ((p is TextBox) && ((TextBox)p).ReadOnly == true)
@@ -431,29 +403,29 @@ namespace PlanZajec
                     }
                 }
                 lblEnd.Visible = true;
-                txtCzas.Visible = true;
+                txtTime.Visible = true;
 
-                if (txtPrzedmiot.Text == "Ukonczona fragment Schematu".ToUpper()) { (new System.Media.SoundPlayer("Computer_Magic.wav")).Play(); }
+                if (txtSubject.Text == "Ukonczona fragment Schematu".ToUpper()) { (new System.Media.SoundPlayer("Computer_Magic.wav")).Play(); }
                 else
                 {
                     int przeliczona;
                     var z = FunctionClassSubject.getById(idSubject);
 
-                    if (int.TryParse(txtCzas.Text, out przeliczona))
+                    if (int.TryParse(txtTime.Text, out przeliczona))
                     {
                         z.Statystyka += przeliczona;
                         FunctionClassSubject.update(z);
-                        filldgSubject(dgGridPrzedmiot);
+                        filldgSubject(dgGridSubject);
                     }
                     else
                     {
                         MessageBox.Show("Proszę wpisać cyfrę");
                     }
-                    txtCzas.Text = "";
-                    txtPrzedmiot.Text = "Koniec";
+                    txtTime.Text = "";
+                    txtSubject.Text = "Koniec";
                     (new System.Media.SoundPlayer("Computer_Magic.wav")).Play();
                 }
-                lblWyswietlaczSchema.Text = dodajCzas.ToString() + "";
+                lblDisplaySchema.Text = addTime.ToString() + "";
             }
         }
         #endregion
@@ -479,9 +451,9 @@ namespace PlanZajec
         public void ClearMainField()
         {
             txtTimeAdd.Text = "";
-            txtPrzedmiotAdd.Text = "";
-            txtPrzedmiot.Text = "";
-            txtCzas.Text = "";
+            txtSubjectAdd.Text = "";
+            txtSubject.Text = "";
+            txtTime.Text = "";
         }
 
         #region Schema And Function 
@@ -634,7 +606,6 @@ namespace PlanZajec
             ClearFieldSchema(txtTimeNine);
             AddSharp(txtTimeNine);
         }
-
         #endregion
     }
 }

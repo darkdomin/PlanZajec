@@ -35,19 +35,19 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btnAddPrzedmiot = new System.Windows.Forms.Button();
-            this.txtPrzedmiotAdd = new System.Windows.Forms.TextBox();
-            this.btnAddCzas = new System.Windows.Forms.Button();
+            this.txtSubjectAdd = new System.Windows.Forms.TextBox();
+            this.btnAddTime = new System.Windows.Forms.Button();
             this.txtTimeAdd = new System.Windows.Forms.TextBox();
-            this.dgGridPrzedmiot = new System.Windows.Forms.DataGridView();
-            this.dgGridCzas = new System.Windows.Forms.DataGridView();
-            this.txtPrzedmiot = new System.Windows.Forms.TextBox();
-            this.txtCzas = new System.Windows.Forms.TextBox();
+            this.dgGridSubject = new System.Windows.Forms.DataGridView();
+            this.dgGridTime = new System.Windows.Forms.DataGridView();
+            this.txtSubject = new System.Windows.Forms.TextBox();
+            this.txtTime = new System.Windows.Forms.TextBox();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnModification = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.btnStart = new System.Windows.Forms.Button();
             this.btnPause = new System.Windows.Forms.Button();
-            this.lblWyswietlacz = new System.Windows.Forms.Label();
+            this.lblDisplay = new System.Windows.Forms.Label();
             this.lblEnd = new System.Windows.Forms.Label();
             this.btnafterAdd = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
@@ -70,13 +70,13 @@
             this.txtSubjectOne = new System.Windows.Forms.TextBox();
             this.txtTimeOne = new System.Windows.Forms.TextBox();
             this.btnSchema = new System.Windows.Forms.Button();
-            this.gbPrzedmiot = new System.Windows.Forms.GroupBox();
-            this.gbCzas = new System.Windows.Forms.GroupBox();
-            this.lblWyswietlaczSchema = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.dgGridPrzedmiot)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgGridCzas)).BeginInit();
-            this.gbPrzedmiot.SuspendLayout();
-            this.gbCzas.SuspendLayout();
+            this.gbSubject = new System.Windows.Forms.GroupBox();
+            this.gbTime = new System.Windows.Forms.GroupBox();
+            this.lblDisplaySchema = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.dgGridSubject)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgGridTime)).BeginInit();
+            this.gbSubject.SuspendLayout();
+            this.gbTime.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnAddPrzedmiot
@@ -91,28 +91,28 @@
             this.btnAddPrzedmiot.Visible = false;
             this.btnAddPrzedmiot.Click += new System.EventHandler(this.btnAddSubject_Click);
             // 
-            // txtPrzedmiotAdd
+            // txtSubjectAdd
             // 
-            this.txtPrzedmiotAdd.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.txtPrzedmiotAdd.Location = new System.Drawing.Point(107, 394);
-            this.txtPrzedmiotAdd.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.txtPrzedmiotAdd.Name = "txtPrzedmiotAdd";
-            this.txtPrzedmiotAdd.Size = new System.Drawing.Size(183, 31);
-            this.txtPrzedmiotAdd.TabIndex = 1;
-            this.txtPrzedmiotAdd.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtPrzedmiotAdd.Visible = false;
+            this.txtSubjectAdd.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.txtSubjectAdd.Location = new System.Drawing.Point(107, 394);
+            this.txtSubjectAdd.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtSubjectAdd.Name = "txtSubjectAdd";
+            this.txtSubjectAdd.Size = new System.Drawing.Size(183, 31);
+            this.txtSubjectAdd.TabIndex = 1;
+            this.txtSubjectAdd.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtSubjectAdd.Visible = false;
             // 
-            // btnAddCzas
+            // btnAddTime
             // 
-            this.btnAddCzas.Location = new System.Drawing.Point(12, 332);
-            this.btnAddCzas.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btnAddCzas.Name = "btnAddCzas";
-            this.btnAddCzas.Size = new System.Drawing.Size(89, 45);
-            this.btnAddCzas.TabIndex = 2;
-            this.btnAddCzas.Text = "Dodaj Czas";
-            this.btnAddCzas.UseVisualStyleBackColor = true;
-            this.btnAddCzas.Visible = false;
-            this.btnAddCzas.Click += new System.EventHandler(this.btnAddCzas_Click);
+            this.btnAddTime.Location = new System.Drawing.Point(12, 332);
+            this.btnAddTime.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnAddTime.Name = "btnAddTime";
+            this.btnAddTime.Size = new System.Drawing.Size(89, 45);
+            this.btnAddTime.TabIndex = 2;
+            this.btnAddTime.Text = "Dodaj Czas";
+            this.btnAddTime.UseVisualStyleBackColor = true;
+            this.btnAddTime.Visible = false;
+            this.btnAddTime.Click += new System.EventHandler(this.btnAddCzas_Click);
             // 
             // txtTimeAdd
             // 
@@ -125,12 +125,12 @@
             this.txtTimeAdd.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtTimeAdd.Visible = false;
             // 
-            // dgGridPrzedmiot
+            // dgGridSubject
             // 
-            this.dgGridPrzedmiot.AllowUserToAddRows = false;
-            this.dgGridPrzedmiot.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgGridPrzedmiot.BackgroundColor = System.Drawing.Color.White;
-            this.dgGridPrzedmiot.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgGridSubject.AllowUserToAddRows = false;
+            this.dgGridSubject.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgGridSubject.BackgroundColor = System.Drawing.Color.White;
+            this.dgGridSubject.BorderStyle = System.Windows.Forms.BorderStyle.None;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -138,9 +138,9 @@
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgGridPrzedmiot.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgGridPrzedmiot.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgGridPrzedmiot.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.dgGridSubject.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgGridSubject.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgGridSubject.Cursor = System.Windows.Forms.Cursors.Hand;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -148,23 +148,23 @@
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.White;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgGridPrzedmiot.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgGridPrzedmiot.GridColor = System.Drawing.Color.Silver;
-            this.dgGridPrzedmiot.Location = new System.Drawing.Point(12, 161);
-            this.dgGridPrzedmiot.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.dgGridPrzedmiot.Name = "dgGridPrzedmiot";
-            this.dgGridPrzedmiot.ReadOnly = true;
-            this.dgGridPrzedmiot.RowHeadersVisible = false;
-            this.dgGridPrzedmiot.RowTemplate.ReadOnly = true;
-            this.dgGridPrzedmiot.Size = new System.Drawing.Size(231, 160);
-            this.dgGridPrzedmiot.TabIndex = 4;
-            this.dgGridPrzedmiot.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgViewPrzedmiot_CellClick);
+            this.dgGridSubject.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgGridSubject.GridColor = System.Drawing.Color.Silver;
+            this.dgGridSubject.Location = new System.Drawing.Point(12, 161);
+            this.dgGridSubject.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.dgGridSubject.Name = "dgGridSubject";
+            this.dgGridSubject.ReadOnly = true;
+            this.dgGridSubject.RowHeadersVisible = false;
+            this.dgGridSubject.RowTemplate.ReadOnly = true;
+            this.dgGridSubject.Size = new System.Drawing.Size(231, 160);
+            this.dgGridSubject.TabIndex = 4;
+            this.dgGridSubject.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgViewPrzedmiot_CellClick);
             // 
-            // dgGridCzas
+            // dgGridTime
             // 
-            this.dgGridCzas.AllowUserToAddRows = false;
-            this.dgGridCzas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgGridCzas.BackgroundColor = System.Drawing.Color.White;
+            this.dgGridTime.AllowUserToAddRows = false;
+            this.dgGridTime.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgGridTime.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -172,8 +172,8 @@
             dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.SlateGray;
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgGridCzas.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.dgGridCzas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgGridTime.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dgGridTime.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle4.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -181,46 +181,46 @@
             dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.White;
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.Black;
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgGridCzas.DefaultCellStyle = dataGridViewCellStyle4;
-            this.dgGridCzas.GridColor = System.Drawing.Color.Silver;
-            this.dgGridCzas.Location = new System.Drawing.Point(249, 161);
-            this.dgGridCzas.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.dgGridCzas.Name = "dgGridCzas";
-            this.dgGridCzas.ReadOnly = true;
-            this.dgGridCzas.RowHeadersVisible = false;
-            this.dgGridCzas.Size = new System.Drawing.Size(41, 160);
-            this.dgGridCzas.TabIndex = 5;
-            this.dgGridCzas.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgViewCzas_CellClick);
+            this.dgGridTime.DefaultCellStyle = dataGridViewCellStyle4;
+            this.dgGridTime.GridColor = System.Drawing.Color.Silver;
+            this.dgGridTime.Location = new System.Drawing.Point(249, 161);
+            this.dgGridTime.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.dgGridTime.Name = "dgGridTime";
+            this.dgGridTime.ReadOnly = true;
+            this.dgGridTime.RowHeadersVisible = false;
+            this.dgGridTime.Size = new System.Drawing.Size(41, 160);
+            this.dgGridTime.TabIndex = 5;
+            this.dgGridTime.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgViewCzas_CellClick);
             // 
-            // txtPrzedmiot
+            // txtSubject
             // 
-            this.txtPrzedmiot.BackColor = System.Drawing.Color.Black;
-            this.txtPrzedmiot.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtPrzedmiot.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.txtPrzedmiot.ForeColor = System.Drawing.Color.SlateGray;
-            this.txtPrzedmiot.Location = new System.Drawing.Point(12, 82);
-            this.txtPrzedmiot.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.txtPrzedmiot.Name = "txtPrzedmiot";
-            this.txtPrzedmiot.ReadOnly = true;
-            this.txtPrzedmiot.Size = new System.Drawing.Size(278, 31);
-            this.txtPrzedmiot.TabIndex = 6;
-            this.txtPrzedmiot.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtPrzedmiot.WordWrap = false;
+            this.txtSubject.BackColor = System.Drawing.Color.Black;
+            this.txtSubject.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.txtSubject.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.txtSubject.ForeColor = System.Drawing.Color.SlateGray;
+            this.txtSubject.Location = new System.Drawing.Point(12, 82);
+            this.txtSubject.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtSubject.Name = "txtSubject";
+            this.txtSubject.ReadOnly = true;
+            this.txtSubject.Size = new System.Drawing.Size(278, 31);
+            this.txtSubject.TabIndex = 6;
+            this.txtSubject.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtSubject.WordWrap = false;
             // 
-            // txtCzas
+            // txtTime
             // 
-            this.txtCzas.BackColor = System.Drawing.Color.Black;
-            this.txtCzas.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtCzas.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.txtCzas.ForeColor = System.Drawing.Color.White;
-            this.txtCzas.Location = new System.Drawing.Point(240, 40);
-            this.txtCzas.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.txtCzas.Name = "txtCzas";
-            this.txtCzas.ReadOnly = true;
-            this.txtCzas.Size = new System.Drawing.Size(35, 24);
-            this.txtCzas.TabIndex = 7;
-            this.txtCzas.Visible = false;
-            this.txtCzas.WordWrap = false;
+            this.txtTime.BackColor = System.Drawing.Color.Black;
+            this.txtTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtTime.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.txtTime.ForeColor = System.Drawing.Color.White;
+            this.txtTime.Location = new System.Drawing.Point(240, 40);
+            this.txtTime.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtTime.Name = "txtTime";
+            this.txtTime.ReadOnly = true;
+            this.txtTime.Size = new System.Drawing.Size(35, 24);
+            this.txtTime.TabIndex = 7;
+            this.txtTime.Visible = false;
+            this.txtTime.WordWrap = false;
             // 
             // btnDelete
             // 
@@ -290,16 +290,16 @@
             this.btnPause.UseVisualStyleBackColor = true;
             this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
             // 
-            // lblWyswietlacz
+            // lblDisplay
             // 
-            this.lblWyswietlacz.AutoSize = true;
-            this.lblWyswietlacz.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblWyswietlacz.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblWyswietlacz.Location = new System.Drawing.Point(113, 47);
-            this.lblWyswietlacz.Name = "lblWyswietlacz";
-            this.lblWyswietlacz.Size = new System.Drawing.Size(80, 23);
-            this.lblWyswietlacz.TabIndex = 13;
-            this.lblWyswietlacz.Text = "00:00:00";
+            this.lblDisplay.AutoSize = true;
+            this.lblDisplay.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblDisplay.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblDisplay.Location = new System.Drawing.Point(113, 47);
+            this.lblDisplay.Name = "lblDisplay";
+            this.lblDisplay.Size = new System.Drawing.Size(80, 23);
+            this.lblDisplay.TabIndex = 13;
+            this.lblDisplay.Text = "00:00:00";
             // 
             // lblEnd
             // 
@@ -628,79 +628,79 @@
             this.btnSchema.UseVisualStyleBackColor = true;
             this.btnSchema.Click += new System.EventHandler(this.btnSchema_Click_1);
             // 
-            // gbPrzedmiot
+            // gbSubject
             // 
-            this.gbPrzedmiot.Controls.Add(this.txtSubjectOne);
-            this.gbPrzedmiot.Controls.Add(this.txtSubjectTwo);
-            this.gbPrzedmiot.Controls.Add(this.txtSubjectThree);
-            this.gbPrzedmiot.Controls.Add(this.txtSubjectFour);
-            this.gbPrzedmiot.Controls.Add(this.txtSubjectFive);
-            this.gbPrzedmiot.Controls.Add(this.txtSubjectSix);
-            this.gbPrzedmiot.Controls.Add(this.txtSubjectSeven);
-            this.gbPrzedmiot.Controls.Add(this.txtSubjectEight);
-            this.gbPrzedmiot.Controls.Add(this.txtSubjectNine);
-            this.gbPrzedmiot.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.gbPrzedmiot.Location = new System.Drawing.Point(319, 6);
-            this.gbPrzedmiot.Name = "gbPrzedmiot";
-            this.gbPrzedmiot.Size = new System.Drawing.Size(284, 321);
-            this.gbPrzedmiot.TabIndex = 37;
-            this.gbPrzedmiot.TabStop = false;
+            this.gbSubject.Controls.Add(this.txtSubjectOne);
+            this.gbSubject.Controls.Add(this.txtSubjectTwo);
+            this.gbSubject.Controls.Add(this.txtSubjectThree);
+            this.gbSubject.Controls.Add(this.txtSubjectFour);
+            this.gbSubject.Controls.Add(this.txtSubjectFive);
+            this.gbSubject.Controls.Add(this.txtSubjectSix);
+            this.gbSubject.Controls.Add(this.txtSubjectSeven);
+            this.gbSubject.Controls.Add(this.txtSubjectEight);
+            this.gbSubject.Controls.Add(this.txtSubjectNine);
+            this.gbSubject.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.gbSubject.Location = new System.Drawing.Point(319, 6);
+            this.gbSubject.Name = "gbSubject";
+            this.gbSubject.Size = new System.Drawing.Size(284, 321);
+            this.gbSubject.TabIndex = 37;
+            this.gbSubject.TabStop = false;
             // 
-            // gbCzas
+            // gbTime
             // 
-            this.gbCzas.Controls.Add(this.txtTimeOne);
-            this.gbCzas.Controls.Add(this.txtTimeTwo);
-            this.gbCzas.Controls.Add(this.txtTimeThree);
-            this.gbCzas.Controls.Add(this.txtTimeFour);
-            this.gbCzas.Controls.Add(this.txtTimeFive);
-            this.gbCzas.Controls.Add(this.txtTimeSix);
-            this.gbCzas.Controls.Add(this.txtTimeSeven);
-            this.gbCzas.Controls.Add(this.txtTimeEight);
-            this.gbCzas.Controls.Add(this.txtTimeNine);
-            this.gbCzas.Location = new System.Drawing.Point(605, -2);
-            this.gbCzas.Name = "gbCzas";
-            this.gbCzas.Size = new System.Drawing.Size(74, 329);
-            this.gbCzas.TabIndex = 38;
-            this.gbCzas.TabStop = false;
+            this.gbTime.Controls.Add(this.txtTimeOne);
+            this.gbTime.Controls.Add(this.txtTimeTwo);
+            this.gbTime.Controls.Add(this.txtTimeThree);
+            this.gbTime.Controls.Add(this.txtTimeFour);
+            this.gbTime.Controls.Add(this.txtTimeFive);
+            this.gbTime.Controls.Add(this.txtTimeSix);
+            this.gbTime.Controls.Add(this.txtTimeSeven);
+            this.gbTime.Controls.Add(this.txtTimeEight);
+            this.gbTime.Controls.Add(this.txtTimeNine);
+            this.gbTime.Location = new System.Drawing.Point(605, -2);
+            this.gbTime.Name = "gbTime";
+            this.gbTime.Size = new System.Drawing.Size(74, 329);
+            this.gbTime.TabIndex = 38;
+            this.gbTime.TabStop = false;
             // 
-            // lblWyswietlaczSchema
+            // lblDisplaySchema
             // 
-            this.lblWyswietlaczSchema.AutoSize = true;
-            this.lblWyswietlaczSchema.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblWyswietlaczSchema.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblWyswietlaczSchema.Location = new System.Drawing.Point(207, 47);
-            this.lblWyswietlaczSchema.Name = "lblWyswietlaczSchema";
-            this.lblWyswietlaczSchema.Size = new System.Drawing.Size(20, 23);
-            this.lblWyswietlaczSchema.TabIndex = 39;
-            this.lblWyswietlaczSchema.Text = "0";
-            this.lblWyswietlaczSchema.Visible = false;
+            this.lblDisplaySchema.AutoSize = true;
+            this.lblDisplaySchema.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblDisplaySchema.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblDisplaySchema.Location = new System.Drawing.Point(207, 47);
+            this.lblDisplaySchema.Name = "lblDisplaySchema";
+            this.lblDisplaySchema.Size = new System.Drawing.Size(20, 23);
+            this.lblDisplaySchema.TabIndex = 39;
+            this.lblDisplaySchema.Text = "0";
+            this.lblDisplaySchema.Visible = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.ClientSize = new System.Drawing.Size(300, 404);
-            this.Controls.Add(this.lblWyswietlaczSchema);
-            this.Controls.Add(this.gbCzas);
+            this.ClientSize = new System.Drawing.Size(300, 326);
+            this.Controls.Add(this.lblDisplaySchema);
+            this.Controls.Add(this.gbTime);
             this.Controls.Add(this.btnSchema);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnafterAdd);
             this.Controls.Add(this.lblEnd);
-            this.Controls.Add(this.lblWyswietlacz);
+            this.Controls.Add(this.lblDisplay);
             this.Controls.Add(this.btnPause);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.btnModification);
             this.Controls.Add(this.btnDelete);
-            this.Controls.Add(this.txtCzas);
-            this.Controls.Add(this.txtPrzedmiot);
-            this.Controls.Add(this.dgGridCzas);
-            this.Controls.Add(this.dgGridPrzedmiot);
+            this.Controls.Add(this.txtTime);
+            this.Controls.Add(this.txtSubject);
+            this.Controls.Add(this.dgGridTime);
+            this.Controls.Add(this.dgGridSubject);
             this.Controls.Add(this.txtTimeAdd);
-            this.Controls.Add(this.btnAddCzas);
-            this.Controls.Add(this.txtPrzedmiotAdd);
+            this.Controls.Add(this.btnAddTime);
+            this.Controls.Add(this.txtSubjectAdd);
             this.Controls.Add(this.btnAddPrzedmiot);
-            this.Controls.Add(this.gbPrzedmiot);
+            this.Controls.Add(this.gbSubject);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
@@ -711,12 +711,12 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Plan Zajęć";
             this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dgGridPrzedmiot)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgGridCzas)).EndInit();
-            this.gbPrzedmiot.ResumeLayout(false);
-            this.gbPrzedmiot.PerformLayout();
-            this.gbCzas.ResumeLayout(false);
-            this.gbCzas.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgGridSubject)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgGridTime)).EndInit();
+            this.gbSubject.ResumeLayout(false);
+            this.gbSubject.PerformLayout();
+            this.gbTime.ResumeLayout(false);
+            this.gbTime.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -725,19 +725,19 @@
         #endregion
 
         private System.Windows.Forms.Button btnAddPrzedmiot;
-        private System.Windows.Forms.TextBox txtPrzedmiotAdd;
-        private System.Windows.Forms.Button btnAddCzas;
+        private System.Windows.Forms.TextBox txtSubjectAdd;
+        private System.Windows.Forms.Button btnAddTime;
         private System.Windows.Forms.TextBox txtTimeAdd;
-        private System.Windows.Forms.DataGridView dgGridPrzedmiot;
-        private System.Windows.Forms.DataGridView dgGridCzas;
-        private System.Windows.Forms.TextBox txtPrzedmiot;
-        private System.Windows.Forms.TextBox txtCzas;
+        private System.Windows.Forms.DataGridView dgGridSubject;
+        private System.Windows.Forms.DataGridView dgGridTime;
+        private System.Windows.Forms.TextBox txtSubject;
+        private System.Windows.Forms.TextBox txtTime;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnModification;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnPause;
-        private System.Windows.Forms.Label lblWyswietlacz;
+        private System.Windows.Forms.Label lblDisplay;
         private System.Windows.Forms.Label lblEnd;
         private System.Windows.Forms.Button btnafterAdd;
         private System.Windows.Forms.Button btnStop;
@@ -760,9 +760,9 @@
         private System.Windows.Forms.TextBox txtSubjectOne;
         private System.Windows.Forms.TextBox txtTimeOne;
         private System.Windows.Forms.Button btnSchema;
-        private System.Windows.Forms.GroupBox gbPrzedmiot;
-        private System.Windows.Forms.GroupBox gbCzas;
-        private System.Windows.Forms.Label lblWyswietlaczSchema;
+        private System.Windows.Forms.GroupBox gbSubject;
+        private System.Windows.Forms.GroupBox gbTime;
+        private System.Windows.Forms.Label lblDisplaySchema;
     }
 }
 
