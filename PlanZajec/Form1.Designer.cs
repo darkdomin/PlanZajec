@@ -346,7 +346,7 @@
             // 
             this.txtSubjectEight.Cursor = System.Windows.Forms.Cursors.Hand;
             this.txtSubjectEight.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.txtSubjectEight.Location = new System.Drawing.Point(6, 249);
+            this.txtSubjectEight.Location = new System.Drawing.Point(6, 257);
             this.txtSubjectEight.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtSubjectEight.Name = "txtSubjectEight";
             this.txtSubjectEight.ReadOnly = true;
@@ -376,7 +376,7 @@
             // 
             this.txtSubjectSeven.Cursor = System.Windows.Forms.Cursors.Hand;
             this.txtSubjectSeven.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.txtSubjectSeven.Location = new System.Drawing.Point(6, 214);
+            this.txtSubjectSeven.Location = new System.Drawing.Point(6, 222);
             this.txtSubjectSeven.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtSubjectSeven.Name = "txtSubjectSeven";
             this.txtSubjectSeven.ReadOnly = true;
@@ -421,7 +421,7 @@
             // 
             this.txtSubjectFour.Cursor = System.Windows.Forms.Cursors.Hand;
             this.txtSubjectFour.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.txtSubjectFour.Location = new System.Drawing.Point(6, 109);
+            this.txtSubjectFour.Location = new System.Drawing.Point(6, 117);
             this.txtSubjectFour.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtSubjectFour.Name = "txtSubjectFour";
             this.txtSubjectFour.ReadOnly = true;
@@ -451,7 +451,7 @@
             // 
             this.txtSubjectFive.Cursor = System.Windows.Forms.Cursors.Hand;
             this.txtSubjectFive.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.txtSubjectFive.Location = new System.Drawing.Point(6, 144);
+            this.txtSubjectFive.Location = new System.Drawing.Point(6, 152);
             this.txtSubjectFive.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtSubjectFive.Name = "txtSubjectFive";
             this.txtSubjectFive.ReadOnly = true;
@@ -481,7 +481,7 @@
             // 
             this.txtSubjectSix.Cursor = System.Windows.Forms.Cursors.Hand;
             this.txtSubjectSix.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.txtSubjectSix.Location = new System.Drawing.Point(6, 179);
+            this.txtSubjectSix.Location = new System.Drawing.Point(6, 187);
             this.txtSubjectSix.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtSubjectSix.Name = "txtSubjectSix";
             this.txtSubjectSix.ReadOnly = true;
@@ -511,7 +511,7 @@
             // 
             this.txtSubjectNine.Cursor = System.Windows.Forms.Cursors.Hand;
             this.txtSubjectNine.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.txtSubjectNine.Location = new System.Drawing.Point(6, 284);
+            this.txtSubjectNine.Location = new System.Drawing.Point(6, 292);
             this.txtSubjectNine.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtSubjectNine.Name = "txtSubjectNine";
             this.txtSubjectNine.ReadOnly = true;
@@ -541,7 +541,7 @@
             // 
             this.txtSubjectTwo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.txtSubjectTwo.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.txtSubjectTwo.Location = new System.Drawing.Point(6, 39);
+            this.txtSubjectTwo.Location = new System.Drawing.Point(6, 47);
             this.txtSubjectTwo.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtSubjectTwo.Name = "txtSubjectTwo";
             this.txtSubjectTwo.ReadOnly = true;
@@ -571,7 +571,7 @@
             // 
             this.txtSubjectThree.Cursor = System.Windows.Forms.Cursors.Hand;
             this.txtSubjectThree.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.txtSubjectThree.Location = new System.Drawing.Point(6, 74);
+            this.txtSubjectThree.Location = new System.Drawing.Point(6, 82);
             this.txtSubjectThree.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtSubjectThree.Name = "txtSubjectThree";
             this.txtSubjectThree.ReadOnly = true;
@@ -586,7 +586,7 @@
             // 
             this.txtSubjectOne.Cursor = System.Windows.Forms.Cursors.Hand;
             this.txtSubjectOne.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.txtSubjectOne.Location = new System.Drawing.Point(6, 4);
+            this.txtSubjectOne.Location = new System.Drawing.Point(6, 12);
             this.txtSubjectOne.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtSubjectOne.Name = "txtSubjectOne";
             this.txtSubjectOne.ReadOnly = true;
@@ -639,10 +639,10 @@
             this.gbSubject.Controls.Add(this.txtSubjectSeven);
             this.gbSubject.Controls.Add(this.txtSubjectEight);
             this.gbSubject.Controls.Add(this.txtSubjectNine);
-            this.gbSubject.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.gbSubject.Location = new System.Drawing.Point(319, 6);
+            this.gbSubject.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.gbSubject.Location = new System.Drawing.Point(319, -2);
             this.gbSubject.Name = "gbSubject";
-            this.gbSubject.Size = new System.Drawing.Size(284, 321);
+            this.gbSubject.Size = new System.Drawing.Size(284, 329);
             this.gbSubject.TabIndex = 37;
             this.gbSubject.TabStop = false;
             // 
@@ -705,6 +705,7 @@
             this.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Location = new System.Drawing.Point(0, -2);
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.Name = "Form1";
